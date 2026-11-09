@@ -1,0 +1,8 @@
+{
+  "_说明": "分发地址统一放这里：页面里的「装到桌面」卡片和构建脚本都读它；README / 体验指南 / INSTALL-AGENT 里写的下载地址，构建时会核对必须在这里出现过",
+  "pages": "https://liljay-h.github.io/ai-news-cover/",
+  "installMd": "https://liljay-h.github.io/ai-news-cover/install.md",
+  "windowsSetup": "https://github.com/LilJay-H/ai-news-cover/releases/latest/download/AI-news-cover-Setup.exe",
+  "plashAppStore": "https://apps.apple.com/app/id1494023538",
+  "plashAdd": "plash:add?url=https%3A%2F%2Fliljay-h.github.io%2Fai-news-cover%2F%3Fhost%3Dplash&title=AI%20news%20cover"
+}

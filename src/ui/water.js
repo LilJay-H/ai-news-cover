@@ -1,6 +1,6 @@
 // 时间“涨水”：
 // 水面是双层波纹（前层实色、后层 38% 透明），欠阻尼弹簧上涨、冲过头再回落；
-// 停住后只保留不到 2px 的微动，并降到约 15 帧/秒，静置时几乎不占 CPU。
+// 停住后保留不到 2px 的微动（约 15 帧/秒）再晃 4 秒就彻底停下，静置时不占 CPU；下次水位变化（每分钟）再动起来。
 import { prefersReducedMotion } from './dom.js';
 
 const W = 640;
@@ -24,6 +24,8 @@ export function createWater(front, back) {
   let raf = 0;
   let timer = 0;
   let on = false;
+  let restAt = 0; // 停住的时刻：之后的微动只持续 IDLE_MS
+  const IDLE_MS = 4000;
 
   function path(level, a, phase, k, off) {
     let d = `M0 ${H + 20} L0 ${level}`;
@@ -54,8 +56,14 @@ export function createWater(front, back) {
     ph += dt * (2.2 + Math.abs(v) * 0.02);
     draw();
     const settled = Math.abs(v) < 0.4 && Math.abs(target - y) < 0.4;
-    if (settled) timer = setTimeout(frame, 66);
-    else raf = requestAnimationFrame(frame);
+    if (!settled) {
+      restAt = 0;
+      raf = requestAnimationFrame(frame);
+    } else {
+      if (!restAt) restAt = now;
+      if (now - restAt < IDLE_MS) timer = setTimeout(frame, 66);
+      else restAt = 0; // 不再排下一帧：水面就停在这一帧
+    }
   }
 
   function kick() {

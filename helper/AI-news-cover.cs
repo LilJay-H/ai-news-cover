@@ -18,7 +18,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-static class Opener
+static partial class Opener
 {
     const int Port = 47821;
     const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -67,7 +67,7 @@ static class Opener
     }
 
     const string PrefKey = @"Software\AINewsCover";
-    static bool Allowed(string url)
+    internal static bool Allowed(string url)
     {
         if (string.IsNullOrEmpty(url) || url.Length > 2000) return false;
         foreach (char c in url)
@@ -77,7 +77,7 @@ static class Opener
         return u.Scheme == "https" && u.Host == "aihot.news" && u.Port == 443 && string.IsNullOrEmpty(u.UserInfo);
     }
 
-    static void OpenInBrowser(string url)
+    internal static void OpenInBrowser(string url)
     {
         // 让系统允许“被我们唤起的浏览器”抢到前台：先发一次按键，再放开前台限制。
         keybd_event(0x12, 0, 0, UIntPtr.Zero);
@@ -88,7 +88,7 @@ static class Opener
         Process.Start(psi);
     }
 
-    static void Serve()
+    internal static void Serve()
     {
         // 端口被占（比如旧版本还没退出）时每 5 秒再试，不让整个程序崩掉
         for (;;)
@@ -321,115 +321,4 @@ static class Opener
         return "已导入 Wallpaper Engine。打开它，在「已安装」里找「AI news cover」即可。";
     }
 
-    static void RunSetup()
-    {
-        // 1) 托盘小工具：装到用户目录（正在运行的旧版先退出）、开机自启、启动
-        string[] names = new string[] { "AI-news-cover", "AI-news-cover-Opener", "AINewsCoverOpener" };
-        foreach (string nm in names)
-        {
-            foreach (Process p in Process.GetProcessesByName(nm))
-            {
-                try
-                {
-                    bool mine = nm != "AI-news-cover" || string.Equals(p.MainModule.FileName, InstalledExe, StringComparison.OrdinalIgnoreCase);
-                    if (mine) { p.Kill(); p.WaitForExit(3000); }
-                }
-                catch { }
-            }
-        }
-        string trayMsg;
-        try
-        {
-            Directory.CreateDirectory(InstallDir);
-            File.Copy(Application.ExecutablePath, InstalledExe, true);
-            SetAutoStart(true, InstalledExe);
-            try { using (RegistryKey k = Registry.CurrentUser.CreateSubKey(PrefKey)) { k.SetValue("AutoStartSeen", 1); } } catch { }
-            Process.Start(InstalledExe);
-            trayMsg = "已装好托盘小工具（开机自动运行）。";
-        }
-        catch (Exception ex) { trayMsg = "托盘小工具没有装好：" + ex.Message; }
-
-        // 2) 壁纸：装了哪个导入哪个
-        string lively = InstallLively();
-        string we = InstallWE();
-        if (lively == null && we == null)
-        {
-            if (MessageBox.Show("没找到 Lively 或 Wallpaper Engine。先装一个，再运行我一次就好。要现在去下载 Lively 吗？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-            {
-                try { Process.Start("https://rocksdanister.github.io/lively/"); } catch { }
-            }
-            return;
-        }
-        bool allOk = trayMsg.StartsWith("已装好") && (lively == null || lively.StartsWith("已导入")) && (we == null || we.StartsWith("已导入"));
-        StringBuilder sb = new StringBuilder();
-        if (allOk) sb.Append("装好了。去 Lively 的库或 Wallpaper Engine 的「已安装」里，选「AI news cover」。");
-        else
-        {
-            sb.Append(trayMsg);
-            if (lively != null) sb.Append("\n").Append(lively);
-            if (we != null) sb.Append("\n").Append(we);
-        }
-        MessageBox.Show(sb.ToString(), AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-    }
-
-    static void Uninstall(NotifyIcon tray)
-    {
-        if (MessageBox.Show("卸载 AI news cover 的托盘小工具？\n（壁纸本身请在 Lively / Wallpaper Engine 里删除。）", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-        try
-        {
-            using (RegistryKey k = Registry.CurrentUser.OpenSubKey(RunKey, true))
-            {
-                if (k != null) { k.DeleteValue(RunName, false); k.DeleteValue(OldRunName, false); }
-            }
-            try { Registry.CurrentUser.DeleteSubKeyTree(PrefKey, false); } catch { }
-            // 等本程序退出后再删目录
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c ping 127.0.0.1 -n 3 >nul & rmdir /s /q \"" + InstallDir + "\"");
-            psi.CreateNoWindow = true;
-            psi.UseShellExecute = false;
-            Process.Start(psi);
-        }
-        catch { }
-        tray.Visible = false;
-        Application.Exit();
-    }
-
-    [STAThread]
-    static void Main(string[] args)
-    {
-        Application.EnableVisualStyles();
-        if (!IsInstalledCopy()) { RunSetup(); return; }
-
-        bool created;
-        Mutex m = new Mutex(true, "AI-news-cover-Opener.Single", out created);
-        if (!created) return;
-
-        // 旧版本留下的启动项：换成新名字
-        using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(RunKey, false))
-        {
-            if (rk != null && rk.GetValue(OldRunName) != null) SetAutoStart(true);
-        }
-
-        Thread t = new Thread(Serve);
-        t.IsBackground = true;
-        t.Start();
-
-        NotifyIcon tray = new NotifyIcon();
-        tray.Icon = SystemIcons.Application;
-        tray.Text = AppName;
-        ContextMenuStrip menu = new ContextMenuStrip();
-        ToolStripMenuItem auto = new ToolStripMenuItem("开机启动");
-        auto.Checked = AutoStartEnabled();
-        auto.Click += delegate { SetAutoStart(!auto.Checked); auto.Checked = AutoStartEnabled(); };
-        ToolStripMenuItem un = new ToolStripMenuItem("卸载");
-        un.Click += delegate { Uninstall(tray); };
-        ToolStripMenuItem quit = new ToolStripMenuItem("退出");
-        quit.Click += delegate { tray.Visible = false; Application.Exit(); };
-        menu.Items.Add(auto);
-        menu.Items.Add(un);
-        menu.Items.Add(quit);
-        tray.ContextMenuStrip = menu;
-        tray.Visible = true;
-        Application.Run();
-        GC.KeepAlive(m);
-    }
 }

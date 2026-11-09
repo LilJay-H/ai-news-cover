@@ -1,5 +1,5 @@
 // 1920×1080 为设计基准，整体按 min(W/1920, H/1080) 等比缩放。
-// Windows：内容区靠右，多出来的宽度留在左边（桌面图标一侧）。Plash（Mac）：居中（图标在右、程序坞在下，位置由 mac.css 排）。
+// Windows 壁纸：内容区靠右，多出来的宽度留在左边（桌面图标一侧）。Plash（Mac）与在线页（浏览器窗口里没有桌面图标）：居中。
 export function mountScale(stages, onChange) {
   stages = [].concat(stages);
   let queued = false;
@@ -9,7 +9,8 @@ export function mountScale(stages, onChange) {
     const hgt = innerHeight;
     const s = Math.min(w / 1920, hgt / 1080);
     const plash = document.documentElement.classList.contains('plash');
-    const x = plash ? (w - 1920 * s) / 2 : w - 1920 * s;
+    const center = plash || (typeof __WEB__ !== 'undefined' && __WEB__);
+    const x = center ? (w - 1920 * s) / 2 : w - 1920 * s;
     const y = (hgt - 1080 * s) / 2;
     for (const el of stages) el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
     document.documentElement.style.setProperty('--s', String(s));

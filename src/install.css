@@ -1,0 +1,57 @@
+/* ---------- 在线页「装到桌面」：和右下角预设图标同一排、同款胶囊，字小、颜色淡，不抢画面 ---------- */
+#get-desktop {
+  position: absolute; right: 376px; bottom: 54px; z-index: 4;
+  height: 30px; padding: 0 13px 0 11px; display: flex; align-items: center; gap: 6px;
+  border: 0; border-radius: 16px; background: var(--chip-bg);
+  box-shadow: inset 0 0 0 1px var(--btn-ring), var(--chip-shadow);
+  font-family: var(--font-serif); font-size: 13px; font-weight: 500; color: var(--mute);
+  cursor: pointer; transition: color 0.12s, background 0.12s;
+}
+#get-desktop svg { stroke: var(--faint); transition: stroke 0.12s; }
+#get-desktop:hover, #get-desktop.on { color: var(--ink); }
+#get-desktop:hover svg, #get-desktop.on svg { stroke: var(--accent); }
+/* Plash 里不是装到桌面的入口 */
+html.plash #get-desktop { display: none; }
+
+/* 卡片：挂在 body 上（不跟着版面缩到看不清），位置贴着胶囊上方右对齐 */
+#install-card {
+  position: fixed; z-index: 60; width: 300px; box-sizing: border-box;
+  padding: 16px 18px 16px; border-radius: 14px;
+  background: var(--card); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--rule), 0 18px 40px rgba(60, 45, 20, 0.16), 0 2px 6px rgba(60, 45, 20, 0.08);
+  transform-origin: 100% 100%;
+  font-family: var(--font-sans);
+}
+:root[data-theme='dark'] #install-card { box-shadow: inset 0 0 0 1px var(--rule), 0 18px 40px rgba(0, 0, 0, 0.45); }
+#install-card .ic-eyebrow {
+  display: block; padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--rule);
+  font-family: var(--font-serif); font-size: 13px; letter-spacing: 0.12em; color: var(--terra-text);
+}
+#install-card .ic-x {
+  position: absolute; top: 10px; right: 10px; width: 26px; height: 26px; border: 0; border-radius: 13px;
+  background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+#install-card .ic-x svg { stroke: var(--faint); }
+#install-card .ic-x:hover { background: var(--btn-hover); }
+#install-card .ic-title { margin: 0 0 4px; font-family: var(--font-serif); font-size: 18px; font-weight: 700; letter-spacing: 0.02em; }
+#install-card .ic-lead { margin: 0 0 12px; font-size: 13px; line-height: 1.6; color: var(--mute); }
+#install-card .ic-note { margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: var(--faint); }
+#install-card .ic-btn {
+  display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 16px;
+  border: 0; border-radius: 16px; box-sizing: border-box; cursor: pointer; text-decoration: none;
+  font: 500 13px/1 var(--font-sans); color: var(--chip-text); background: transparent;
+  box-shadow: inset 0 0 0 1px var(--btn-ring);
+  transition: background 0.12s;
+}
+#install-card .ic-btn:hover { background: var(--btn-hover); }
+#install-card .ic-btn.pri { color: var(--paper); background: var(--ink); box-shadow: none; }
+#install-card .ic-btn.pri:hover { background: var(--accent); }
+#install-card .ic-steps { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: s; }
+#install-card .ic-steps li {
+  counter-increment: s; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 8px 0; border-top: 1px dashed var(--rule); font-size: 13px; color: var(--mute);
+}
+#install-card .ic-steps li:first-child { border-top: 0; }
+#install-card .ic-steps li > span::before { content: counter(s) '  '; font-family: var(--font-fr); font-weight: 600; color: var(--terra-text); }
+#install-card .ic-alt { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+#install-card .ic-alt .ic-lead { margin-bottom: 8px; }

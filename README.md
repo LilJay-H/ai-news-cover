@@ -3,6 +3,8 @@
 ![AI news cover](assets/store/preview_16x9.png)
 
 > 把桌面变成一张会更新的 AI 报纸。
+>
+> 让 AI 助手帮你装：对它说「按这个链接帮我装：https://liljay-h.github.io/ai-news-cover/install.md」
 
 ![动效演示](assets/store/demo.gif)
 
@@ -14,7 +16,7 @@
 
 让眼睛离新闻再近一点，让信息入口离人再近一点，让我离 AI 的最新动态更再近一点————于是，便有了 **AI news cover** 这个壁纸项目。它把卡神的 [AIHOT](https://aihot.news) 搬到了桌面上，变成**一张每时每刻都在更新的 AI 报纸**。
 
-**[在线体验 →](https://liljay-h.github.io/ai-news-cover/)** 不用安装，打开就能看。
+**[打开就能看 →](https://liljay-h.github.io/ai-news-cover/)** 想装到桌面，点页面角落的「装到桌面」。
 
 ## 它是一张报纸，而不只是一个壁纸
 
@@ -46,16 +48,17 @@ This is enough.
 
 ## 安装
 
-到 [Releases](../../releases/latest) 下载：
+打开 <https://liljay-h.github.io/ai-news-cover/> 就能看；想装到桌面，点页面角落的「装到桌面」。它会认出你的系统，只给你需要的那一步：
 
-| 你的电脑 | 下载 | 安装 |
-|---|---|---|
-| Windows（Lively 或 Wallpaper Engine） | `AI-news-cover-Setup.exe` | 双击运行 |
-| macOS（Plash） | 即将支持 | — |
+| 你的电脑 | 怎么装 |
+|---|---|
+| Windows | 点「下载并双击」，下载 `AI-news-cover-Setup.exe` 后双击运行，不需要其他软件 |
+| macOS | 先装免费的 [Plash](https://apps.apple.com/app/id1494023538)，再点「添加到 Plash」 |
+| 任何电脑 | 在 Chrome / Edge 里点「安装为应用」，装成一个独立的小窗口 |
 
-Windows 版会一起装上一个托盘小工具，让点开的新闻在浏览器里正常弹出。第一次运行时如果提示「未知发布者」，点「更多信息 → 仍要运行」即可。
+Windows 第一次运行时如果提示「未知发布者」，点「更多信息 → 仍要运行」即可。装好后，屏幕右下角会多一个小图标，右键可以换预设和外观。已经在用 Lively 或 Wallpaper Engine 的话，也可以在这个小图标的「更多」里导入到它们（可选）。
 
-也可以把 [INSTALL-AGENT.md](INSTALL-AGENT.md) 里的那段话发给你的 AI 助手（Claude Code、Codex 等），让它帮你装好。
+也可以让 AI 助手帮你装，对它说：「按这个链接帮我装：https://liljay-h.github.io/ai-news-cover/install.md」
 
 ## 数据来源与许可
 

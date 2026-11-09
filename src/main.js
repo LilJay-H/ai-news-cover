@@ -1,4 +1,5 @@
 import './styles.css';
+import './install.css';
 import './ui/clock.js';
 import './ui/quotes.js';
 import './ui/featured.js';
@@ -22,6 +23,7 @@ import { onTapDelegate } from './ui/dom.js';
 import { refreshTheme } from './ui/theme.js';
 import { warmFonts, warmLayout } from './ui/warm.js';
 import { startFeeds, pauseFeeds, resumeFeeds } from './data/feeds.js';
+import { mountInstall, registerSW } from './ui/install.js';
 
 const stage = document.getElementById('stage');
 const clock = document.querySelector('nc-clock');
@@ -161,5 +163,10 @@ mountDev({
     });
   },
 });
+// 在线页：右下角「装到桌面」+ 可安装为应用（PWA 离线缓存）
+if (typeof __WEB__ !== 'undefined' && __WEB__) {
+  mountInstall();
+  registerSW();
+}
 pingHelper();
 boot();

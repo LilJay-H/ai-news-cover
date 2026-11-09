@@ -125,7 +125,7 @@ nc-featured { left: 1147px; top: 106px; width: 366px; height: 771px; padding: 16
 .new { display: inline-flex; align-items: center; gap: 5px; margin-left: 8px; font-size: 11px; font-weight: 700; color: var(--accent); }
 .new i { position: relative; width: 6px; height: 6px; }
 .new i::before, .new i::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--accent); }
-.new i::before { animation: pulse 1.8s ease-out infinite; }
+.new i::before { animation: pulse 1.8s ease-out 3; } /* 只闪 3 次就停：无限循环会让空闲 CPU 一直偏高 */
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.8); opacity: 0; } }
 
 .retry-box { display: none; margin-top: auto; justify-content: space-between; align-items: flex-end; gap: 12px; padding-top: 12px; border-top: 1px dashed var(--rule); font-size: 12px; line-height: 1.6; color: var(--mute); }
@@ -172,7 +172,7 @@ nc-daily .lead { transition: color 0.12s; }
 
 /* ---------- 加载骨架（纸纹色扫光，不转圈） ---------- */
 .skel { position: relative; overflow: hidden; border-radius: 3px; background: var(--skel); }
-.skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--skel-shine), transparent); transform: translateX(-100%); animation: sweep 1.8s var(--ease) infinite; }
+.skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--skel-shine), transparent); transform: translateX(-100%); animation: sweep 1.8s var(--ease) 6; } /* 加载占位最多扫 6 次（约 11 秒），不无限循环 */
 @keyframes sweep { to { transform: translateX(100%); } }
 .skel-row { flex: none; display: flex; flex-direction: column; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
 .skel-row .skel { height: 14px; }

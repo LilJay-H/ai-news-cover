@@ -154,16 +154,16 @@ nc-full { display: none; }
 .fd-flip.flipped .fd-face.front { pointer-events: none; }
 .fd-flip:not(.flipped) .fd-face.back { pointer-events: none; }
 
-/* ---------- 留言条：剪报，两角贴死，下沿向外吹起（6s，仅 transform / opacity） ---------- */
+/* ---------- 留言条：剪报，两角贴死，下沿向外吹起（6s 一轮，摆 3 轮后停住；仅 transform / opacity） ---------- */
 .note-slot { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 6; }
 .note { position: absolute; left: 869px; top: 16px; width: 300px; cursor: pointer; opacity: 0; transform: translateY(-120px) rotate(-8deg); transition: transform 0.7s var(--spring), opacity 0.3s var(--ease); }
 .note.show { opacity: 1; transform: none; }
 .note.crumple { opacity: 0; transform: translate(40px, 30px) rotate(40deg) scale(0.15); transition: transform 0.45s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.45s ease-in; }
-.note-flutter { --r: -3deg; position: relative; transform: rotate(var(--r)); transform-origin: 50% 0; animation: noteFlutter 6s ease-in-out infinite; }
-.note-shadow { position: absolute; left: 14px; right: 10px; bottom: -4px; height: 26px; background: rgba(60, 45, 20, 0.28); filter: blur(10px); border-radius: 50%; animation: noteLift 6s ease-in-out infinite; }
+.note-flutter { --r: -3deg; position: relative; transform: rotate(var(--r)); transform-origin: 50% 0; animation: noteFlutter 6s ease-in-out 3 forwards; }
+.note-shadow { position: absolute; left: 14px; right: 10px; bottom: -4px; height: 26px; background: rgba(60, 45, 20, 0.28); filter: blur(10px); border-radius: 50%; animation: noteLift 6s ease-in-out 3 forwards; }
 .note-paper { position: relative; box-sizing: border-box; font-family: var(--font-note); color: #3a322a; padding: 20px 22px 16px; background-color: #fbf5e8; background-image: repeating-linear-gradient(0deg, rgba(90, 70, 40, 0.03) 0 1px, rgba(0, 0, 0, 0) 1px 4px), linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0)); box-shadow: inset 0 0 0 1px rgba(28, 26, 23, 0.06); }
 .note-line { display: block; height: 1px; background: #1c1a17; opacity: 0.55; margin: -8px 0 10px; }
-.note-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(90, 70, 40, 0.06) 55%, rgba(255, 250, 238, 0.55) 100%); animation: noteShade 6s ease-in-out infinite; }
+.note-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(90, 70, 40, 0.06) 55%, rgba(255, 250, 238, 0.55) 100%); animation: noteShade 6s ease-in-out 3 forwards; }
 .n-head { font-size: 22px; line-height: 1.35; }
 .n-lines { font-size: 19px; line-height: 1.5; margin-top: 4px; }
 .n-tail { font-size: 22px; text-align: right; margin-top: 2px; color: #c8501c; }
