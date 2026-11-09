@@ -1,0 +1,21 @@
+{
+  "name": "ai-news-cover",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.mjs",
+    "dev": "node build/build.mjs --watch",
+    "pack": "node build/build.mjs && python build/pack.py",
+    "release": "node build/build.mjs && python build/pack.py && node build/build-helper.mjs",
+    "helper": "node build/build-helper.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/noto-sans-sc": "^5.3.1",
+    "@fontsource-variable/noto-serif-sc": "^5.3.1",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/long-cang": "^5.3.0",
+    "esbuild": "^0.28.2"
+  }
+}

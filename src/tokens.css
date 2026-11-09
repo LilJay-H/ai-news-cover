@@ -1,0 +1,106 @@
+/* 设计令牌：亮色为默认，暗色跟随系统。 */
+:root {
+  --paper: #f2ede3;
+  --card: #fbf8f2;
+  --ink: #1c1a17;
+  --mute: #6e675c;
+  --faint: #9c9488;
+  --grey: #b7ae9f; /* 热点 4、5 名与「持平」 */
+  --accent: #c8501c;
+  --link: #b8481a;
+  --terra: #c9946e; /* 栏头短横 */
+  --terra-text: #a8714c; /* TOP 5 / 日报日期 / 24h 计数 */
+  --terra-soft: #8a6a55; /* 日报副文 */
+  --up: #4f8a5b;
+  --rule: rgba(28, 26, 23, 0.12);
+  --btn-ring: rgba(28, 26, 23, 0.18);
+  --btn-hover: rgba(28, 26, 23, 0.06);
+  --heat-dim: rgba(176, 100, 63, 0.35);
+  --hl: rgba(232, 150, 96, 0.45); /* 荧光划线 */
+  --hero-bg: radial-gradient(55% 140% at 100% 0%, rgba(255, 210, 160, 0.38), rgba(255, 210, 160, 0) 70%),
+    linear-gradient(110deg, rgba(255, 222, 190, 0.78) 0%, rgba(251, 236, 218, 0.48) 55%, rgba(250, 230, 208, 0.32) 100%);
+  --chip-bg: rgba(251, 248, 242, 0.85);
+  --chip-text: #4a453d;
+  --chip-shadow: 0 4px 12px rgba(60, 45, 20, 0.06);
+  --skel: rgba(28, 26, 23, 0.06);
+  --skel-shine: rgba(255, 250, 240, 0.7);
+  --light: linear-gradient(118deg, rgba(0, 0, 0, 0) 6%, rgba(255, 244, 214, 0.55) 20%, rgba(0, 0, 0, 0) 38%),
+    radial-gradient(circle at 0% 0%, rgba(255, 232, 196, 0.45), rgba(0, 0, 0, 0) 42%);
+
+  /* 完整版 */
+  --clay: #b0643f; /* 完整版大时间、日报小字 */
+  --pill-bg: #f7ebe1; /* 头条标签、热点第一条底色 */
+  --pill-text: #8a5a3c;
+  --hero-sum: #5e584e;
+  --old-paper: #e6dcc4; /* 一个月前：泛黄新闻纸 */
+  --old-ink: #4a3b2c;
+  --old-soft: #8a6a55;
+  --old-fold: #cdbe9f;
+  --fold-a: #d9cbae; /* 日报折角翻起来的那一面（浅 → 深） */
+  --fold-b: #cdbe9f;
+
+  /* 分类色 */
+  --c-ai-models: #c8501c;
+  --c-ai-products: #b0643f;
+  --c-industry: #7a4a2e;
+  --c-paper: #5e7f63;
+  --c-tip: #9c7a3c;
+  --c-opinion: #8a5a9c; /* 接口里的「观点」借用规格里闲置的紫色 */
+  --c-other: #9c9488;
+
+  --font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Songti SC', serif;
+  --font-sans: 'Noto Sans SC Variable', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-fr: 'Fraunces Variable', 'Fraunces', serif;
+  --font-inst: 'Instrument Serif', 'Noto Serif SC Variable', serif;
+  --font-note: 'Long Cang', 'Noto Serif SC Variable', cursive;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --spring: cubic-bezier(0.2, 0.9, 0.25, 1.08);
+}
+
+:root[data-theme='dark'] {
+  --paper: #1a1814;
+  --card: #24211c;
+  --ink: #ece5d8;
+  --mute: #a39a8c;
+  --faint: #857d70;
+  --grey: #6f685d;
+  --accent: #e0662e;
+  --link: #f08a55;
+  --terra: #c26a3e;
+  --terra-text: #d9875a;
+  --terra-soft: #b59a86;
+  --up: #6fb27c;
+  --rule: rgba(236, 229, 216, 0.14);
+  --btn-ring: rgba(236, 229, 216, 0.22);
+  --btn-hover: rgba(236, 229, 216, 0.08);
+  --heat-dim: rgba(217, 135, 90, 0.35);
+  --hl: rgba(224, 102, 46, 0.4);
+  --hero-bg: radial-gradient(55% 140% at 100% 0%, rgba(224, 102, 46, 0.22), rgba(224, 102, 46, 0) 70%),
+    linear-gradient(110deg, rgba(224, 102, 46, 0.2) 0%, rgba(224, 102, 46, 0.08) 55%, rgba(224, 102, 46, 0.04) 100%);
+  --chip-bg: rgba(36, 33, 28, 0.85);
+  --chip-text: #cfc7b9;
+  --chip-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --skel: rgba(236, 229, 216, 0.07);
+  --skel-shine: rgba(236, 229, 216, 0.12);
+  --light: radial-gradient(circle at 34% 30%, rgba(255, 190, 120, 0.2), rgba(0, 0, 0, 0) 40%);
+
+  --clay: #d9875a;
+  --pill-bg: #3a2d24;
+  --pill-text: #d9a27e;
+  --hero-sum: #b6ad9f;
+  --old-paper: #3a3228;
+  --old-ink: #d8cdb8;
+  --old-soft: #b59a86;
+  --old-fold: #4a4034;
+  --fold-a: #55493a;
+  --fold-b: #4a4034;
+
+  --c-ai-models: #e0662e;
+  --c-ai-products: #d9875a;
+  --c-industry: #a06a47;
+  --c-paper: #7fa386;
+  --c-tip: #c49a52;
+  --c-opinion: #ac7fbe;
+  --c-other: #857d70;
+}

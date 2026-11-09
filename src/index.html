@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI news cover</title>
+<link rel="stylesheet" href="app.css">
+<script>if (/[?&]host=plash/.test(location.search)) document.documentElement.classList.add('plash');
+document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';</script>
+</head>
+<body>
+<div id="light" aria-hidden="true"></div>
+<div id="stage">
+  <div id="center">
+    <nc-clock></nc-clock>
+    <nc-quote></nc-quote>
+  </div>
+  <nc-featured></nc-featured>
+  <nc-hot></nc-hot>
+  <nc-daily></nc-daily>
+  <nc-full></nc-full>
+  <nc-preset></nc-preset>
+  <a id="aihot-link" data-href="https://aihot.news/" href="https://aihot.news/" aria-label="在 AIHOT 网页版查看全部"><span class="dot"></span>在 AIHOT 查看全部<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+</div>
+<div id="scrim"></div>
+<div id="overlay"><section id="panel" role="dialog" aria-modal="true" class="p-card"></section></div>
+<span id="credit">AI news cover · 数据来自 AIHOT</span>
+<script src="app.js"></script>
+</body>
+</html>

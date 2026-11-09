@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI news cover 体验指南</title>
+<style>
+:root { --paper:#f2ede3; --ink:#2a2622; --mute:#7a7266; --accent:#c8501c; --line:#d8cfbe; }
+@media (prefers-color-scheme: dark) { :root { --paper:#1f1c18; --ink:#ece5d8; --mute:#a39a8a; --accent:#e0703a; --line:#3a352e; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.8 "Noto Serif SC","Songti SC","Source Han Serif SC",serif; }
+main { max-width:680px; margin:0 auto; padding:56px 20px 96px; }
+h1 { font-size:34px; line-height:1.3; margin:0 0 24px; padding-bottom:18px; border-bottom:3px double var(--ink); }
+h2 { font-size:24px; margin:48px 0 12px; padding-top:14px; border-top:1px solid var(--line); }
+h3 { font-size:19px; margin:28px 0 6px; color:var(--accent); }
+p, li { margin:8px 0; }
+ul, ol { padding-left:1.4em; }
+a { color:var(--accent); }
+code { font:0.9em ui-monospace,Consolas,monospace; background:rgba(128,118,100,.15); padding:1px 5px; border-radius:3px; }
+img { max-width:100%; border:1px solid var(--line); border-radius:4px; }
+.fig { margin:16px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>AI news cover 体验指南</h1>
+<p>一张会自己更新的 AI 报纸，铺在你的桌面上。三分钟装好，剩下的慢慢发现。</p>
+<h2>先看一眼</h2>
+<p>不想装也没关系，在浏览器里打开 <a href="https://liljay-h.github.io/ai-news-cover/" target="_blank" rel="noopener">在线体验</a>，和桌面上看到的是同一张报纸。</p>
+<h2 id="install">三分钟装好</h2>
+<h3>Windows</h3>
+<ol>
+<li>到 <a href="https://github.com/LilJay-H/ai-news-cover/releases/latest" target="_blank" rel="noopener">Releases</a> 下载 <code>AI-news-cover-Setup.exe</code></li>
+<li>双击运行。如果提示「未知发布者」，点「更多信息」，再点「仍要运行」</li>
+<li>看到「已装好」，就好了</li>
+</ol>
+<p>它会自己找到你电脑上的 Lively 或 Wallpaper Engine，把报纸放进去；两个都有，就两个都放。还没装？先挑一个：</p>
+<ul>
+<li><b>Lively</b>：免费，到 <a href="https://rocksdanister.github.io/lively/" target="_blank" rel="noopener">https://rocksdanister.github.io/lively/</a> 下载</li>
+<li><b>Wallpaper Engine</b>：在 Steam 上购买</li>
+</ul>
+<p>装好后，在 Lively 的库里，或 Wallpaper Engine 的「已安装」里，选中「AI news cover」。</p>
+<p>右下角托盘会多一个小图标。它负责让你点开的新闻在浏览器里好好弹出来，也让报纸跟着系统的深色、浅色走。不想开机自启，或者想卸载，右键它就行。</p>
+<h3>Mac</h3>
+<p>即将支持。</p>
+<h2>两种读法</h2>
+<p>右下角有两个小图标，点一下就能换。</p>
+<ul>
+<li><b>简约版</b>：像一张印好的报纸，安静地铺在桌面上</li>
+<li><b>详细版</b>：精选、热点、日报各一张卡片，想多看一点的时候用它</li>
+</ul>
+<p>屏幕小的时候，它会自己换成简约版。</p>
+<p class="fig"><img src="assets/store/showcase_01_glance.png" alt="简约版"></p>
+<p class="fig"><img src="assets/store/showcase_02_full.png" alt="详细版"></p>
+<h2>一眼、展开、细读</h2>
+<ul>
+<li>平时，抬眼看一下标题就够了</li>
+<li>想多看，点栏头的放大按钮，这一栏会在原地铺开；精选和热点之间，点另一边的放大按钮就能直接换过去</li>
+<li>对哪条感兴趣，点它，读摘要和推荐理由</li>
+<li>想读全文，点「在 AIHOT 阅读原文」，浏览器会帮你打开</li>
+<li>点日报，可以读完整的一期</li>
+</ul>
+<p>全程只用鼠标。</p>
+<h2>按你的喜好调一调</h2>
+<p>在 Lively 或 Wallpaper Engine 的属性里：</p>
+<ul>
+<li><b>预设</b>：简约版，或详细版</li>
+<li><b>外观</b>：跟随系统、浅色、深色</li>
+<li><b>强调色</b>：换一个你喜欢的颜色</li>
+</ul>
+<h2>藏在纸里的东西</h2>
+<p>不剧透。留意清晨、深夜、你离开之后，还有日报右上角的那个小角。</p>
+<h2>遇到问题</h2>
+<p>到 <a href="https://github.com/LilJay-H/ai-news-cover/issues" target="_blank" rel="noopener">Issues</a> 告诉我，我会看的。</p>
+</main>
+</body>
+</html>

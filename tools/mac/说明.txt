@@ -1,0 +1,8 @@
+AI news cover · Mac
+
+1. 双击「安装.command」。
+   第一次会被 macOS 拦住：右键点它，选「打开」，再点一次「打开」就好。
+2. 它会把报纸加进 Plash（没有 Plash 的话，会先带你去 App Store 装）。
+3. 在菜单栏的 Plash 图标里打开「浏览模式」，就能点开新闻。
+
+免费，开源（MIT）：在 GitHub 搜索「AI news cover」。

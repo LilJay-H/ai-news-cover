@@ -1,0 +1,11 @@
+{
+  "AppVersion": "1.0.0.0",
+  "Title": "AI news cover",
+  "Thumbnail": "thumbnail.png",
+  "Preview": "preview.png",
+  "Desc": "一张会自己更新的 AI 报纸，铺在你的桌面上。数据来自 AIHOT。",
+  "Author": "AI news cover",
+  "License": "",
+  "Type": 1,
+  "FileName": "index.html"
+}

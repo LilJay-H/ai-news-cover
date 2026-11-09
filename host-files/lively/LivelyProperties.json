@@ -1,0 +1,31 @@
+{
+  "accent": {
+    "type": "color",
+    "text": "强调色",
+    "value": "#C8501C"
+  },
+  "preset": {
+    "type": "dropdown",
+    "text": "预设",
+    "value": 0,
+    "items": [
+      "简约版",
+      "详细版"
+    ]
+  },
+  "theme": {
+    "type": "dropdown",
+    "text": "外观",
+    "value": 0,
+    "items": [
+      "跟随系统",
+      "浅色",
+      "深色"
+    ]
+  },
+  "dev": {
+    "type": "checkbox",
+    "text": "开发预览条",
+    "value": false
+  }
+}

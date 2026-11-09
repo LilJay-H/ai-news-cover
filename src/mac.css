@@ -1,0 +1,26 @@
+/* Plash（Mac）：在线页加 ?host=plash 时，<html> 带 .plash。版式照画布 Mac_Glance / Mac_Full / Mac_Dark_Glance：
+   图标在右、程序坞在下，所以栏位镜像到左边，右下角的小件挪到左下，署名挪到右下。 */
+
+/* 简约版：热点 / 日报在左，精选居中，时间名言在右 */
+html.plash #center { left: 860px; }
+html.plash nc-featured { left: 407px; }
+html.plash nc-hot, html.plash nc-daily { left: 120px; }
+html.plash .g-mini, html.plash .g-feat, html.plash .g-hot { left: 407px; }
+html.plash .g-fmini, html.plash .g-month, html.plash .g-detail { left: 120px; }
+
+/* 详细版：名言在左、时间在右；热点和日报一列在左，精选大卡在右 */
+html.plash .fh { left: 128px; flex-direction: row-reverse; }
+html.plash .ff { left: 640px; }
+html.plash .fhot { left: 120px; }
+html.plash .fd-wrap { left: 120px; }
+
+/* 左下：「在 AIHOT 查看全部」和预设图标（避开程序坞）；右下：署名 */
+html.plash #aihot-link { right: auto; left: 120px; bottom: 97px; }
+html.plash nc-preset { right: auto; left: 309px; bottom: 97px; }
+html.plash #credit { left: auto; right: calc(var(--ox, 0px) + 30px * var(--s, 1)); bottom: calc(100px * var(--s, 1)); }
+
+/* 不是壁纸页面的入口：Plash 里不显示「装到桌面」 */
+html.plash #get-desktop { display: none; }
+
+/* Plash 默认是「只看」：点击会穿到桌面，悬停和按下效果全部关掉。在菜单栏打开「浏览模式」后才可点 */
+html.plash:not(.plash-is-browsing-mode) * { pointer-events: none !important; cursor: default !important; }

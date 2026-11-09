@@ -1,0 +1,50 @@
+{
+  "file": "index.html",
+  "title": "AI news cover",
+  "type": "web",
+  "preview": "preview.jpg",
+  "description": "一张会自己更新的 AI 报纸，铺在你的桌面上。数据来自 AIHOT。",
+  "tags": ["News", "Minimalist", "Interactive"],
+  "contentrating": "Everyone",
+  "general": {
+    "properties": {
+      "preset": {
+        "index": 0,
+        "order": 0,
+        "text": "预设",
+        "type": "combo",
+        "value": "0",
+        "options": [
+          { "label": "简约版", "value": "0" },
+          { "label": "详细版", "value": "1" }
+        ]
+      },
+      "theme": {
+        "index": 1,
+        "order": 1,
+        "text": "外观",
+        "type": "combo",
+        "value": "0",
+        "options": [
+          { "label": "跟随系统", "value": "0" },
+          { "label": "浅色", "value": "1" },
+          { "label": "深色", "value": "2" }
+        ]
+      },
+      "accent": {
+        "index": 2,
+        "order": 2,
+        "text": "强调色",
+        "type": "color",
+        "value": "0.78431 0.31373 0.10980"
+      },
+      "dev": {
+        "index": 3,
+        "order": 3,
+        "text": "开发预览条",
+        "type": "bool",
+        "value": false
+      }
+    }
+  }
+}
