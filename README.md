@@ -53,7 +53,7 @@ This is enough.
 | 你的电脑 | 怎么装 |
 |---|---|
 | Windows | 点「下载并双击」，下载 `AI-news-cover-Setup.exe` 后双击运行，不需要其他软件 |
-| macOS | 先装免费的 [Plash](https://apps.apple.com/app/id1494023538)，再点「添加到 Plash」 |
+| macOS | 即将支持 |
 | 任何电脑 | 在 Chrome / Edge 里点「安装为应用」，装成一个独立的小窗口 |
 
 Windows 第一次运行时如果提示「未知发布者」，点「更多信息 → 仍要运行」即可。装好后，屏幕右下角会多一个小图标，右键可以换预设和外观。已经在用 Lively 或 Wallpaper Engine 的话，也可以在这个小图标的「更多」里导入到它们（可选）。

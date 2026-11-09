@@ -26,7 +26,7 @@
 2. 告诉我即将运行它，然后运行。它不需要管理员权限，也不需要任何别的壁纸软件。如果 Windows 提示「Windows 已保护你的电脑」或「未知发布者」，让我点「更多信息」，再点「仍要运行」
 3. 等它装完。如果弹出提示框，等我点完
 
-装好后桌面上会出现报纸。如果我电脑上已经有 Lively Wallpaper 或 Wallpaper Engine，也可以在它们里面选「AI news cover」，这一步是可选的，不用替我装它们。
+装好后桌面上会出现报纸。如果我电脑上已经有 Lively Wallpaper 或 Wallpaper Engine，也可以右键屏幕右下角托盘里的小图标，在「更多」里选「导入到 Lively / Wallpaper Engine」，这一步是可选的，不用替我装它们。
 
 ## macOS
 

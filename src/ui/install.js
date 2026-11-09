@@ -79,7 +79,7 @@ function body() {
         h('li', null, h('span', null, '先装免费的 Plash'), btn('打开 App Store', { href: D.plashAppStore })),
         h('li', null, h('span', null, '装好后，把报纸加进去'), btn('添加到 Plash', { href: D.plashAdd, primary: true })),
       ),
-      h('p', { class: 'ic-note' }, '在菜单栏的 Plash 里打开「浏览模式」，就能点新闻了。'),
+      h('p', { class: 'ic-note' }, '在菜单栏的 Plash 里打开「浏览模式」，就能点新闻了；再在它的设置里打开「在默认浏览器中打开外部链接」，点开的新闻会在浏览器里弹出。'),
     );
   } else {
     parts.push(h('p', { class: 'ic-title' }, '装到桌面'));
