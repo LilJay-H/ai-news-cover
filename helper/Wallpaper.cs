@@ -90,6 +90,7 @@ class WallpaperWindow : NativeWindow
         };
         wv.NavigationCompleted += delegate (object s, CoreWebView2NavigationCompletedEventArgs e)
         {
+            Log.Write("网页载入完成 " + Device + " 成功=" + e.IsSuccess + " 状态=" + e.WebErrorStatus);
             Ready = true;
             widget = IntPtr.Zero;
             host.OnPageReady(this);
@@ -120,11 +121,16 @@ class WallpaperWindow : NativeWindow
         }
     }
 
-    public void SetRunning(bool run)
+    string lastWhy;
+
+    public void SetRunning(bool run, string why)
     {
         if (!Alive) return;
-        try { SetRunningCore(run); } catch { }
+        if (why != lastWhy) { Log.Write("壁纸 " + Device + (run ? " 显示" : " 暂停") + "（" + why + "）"); lastWhy = why; }
+        try { SetRunningCore(run); } catch (Exception ex) { Log.Write("切换显示出错：" + ex.Message); }
     }
+
+    public bool Showing { get { try { return Alive && Ready && Ctl.IsVisible; } catch { return false; } } }
 
     void SetRunningCore(bool run)
     {
@@ -243,19 +249,24 @@ class WallpaperHost
 
     bool eventsHooked;
 
-    [DllImport("wtsapi32.dll")] static extern bool WTSQuerySessionInformation(IntPtr server, int session, int cls, out IntPtr buf, out int bytes);
+    [DllImport("wtsapi32.dll", CharSet = CharSet.Unicode)] static extern bool WTSQuerySessionInformation(IntPtr server, int session, int cls, out IntPtr buf, out int bytes);
     [DllImport("wtsapi32.dll")] static extern void WTSFreeMemory(IntPtr p);
 
-    /// <summary>当前会话是不是锁着（锁屏事件只在切换时才来，启动时要自己问一次）</summary>
+    /// <summary>当前会话是不是锁着（锁屏事件只在切换时才来，启动时要自己问一次）。
+    /// WTSINFOEXW：Level（4 字节）之后的 Data 按 8 字节对齐，Level 1 里依次是 SessionId@8、SessionState@12、SessionFlags@16。
+    /// v0.2.0 误读了偏移 12（SessionState，在线时恰好是 0），把每台电脑都当成锁屏，报纸一直藏着。拿不准时一律当作没锁。</summary>
     static bool SessionLocked()
     {
         IntPtr buf; int n;
         try
         {
             if (!WTSQuerySessionInformation(IntPtr.Zero, System.Diagnostics.Process.GetCurrentProcess().SessionId, 25, out buf, out n)) return false; // WTSSessionInfoEx
-            int flags = n >= 16 ? Marshal.ReadInt32(buf, 12) : -1;
-            WTSFreeMemory(buf);
-            return flags == 0; // WTS_SESSIONSTATE_LOCK
+            try
+            {
+                const int flagsOffset = 16;
+                return n >= flagsOffset + 4 && Marshal.ReadInt32(buf) == 1 && Marshal.ReadInt32(buf, flagsOffset) == 0; // WTS_SESSIONSTATE_LOCK
+            }
+            finally { WTSFreeMemory(buf); }
         }
         catch { return false; }
     }
@@ -263,6 +274,7 @@ class WallpaperHost
     public async Task Start()
     {
         locked = SessionLocked();
+        Log.Write("启动：Windows " + Environment.OSVersion.Version + "，锁屏=" + locked + "，WebView2 " + Opener.RuntimeVersion());
         CoreWebView2Environment.SetLoaderDllFolderPath(LoaderDir);
         CoreWebView2EnvironmentOptions opt = new CoreWebView2EnvironmentOptions();
         opt.Language = "zh-CN";
@@ -270,6 +282,7 @@ class WallpaperHost
         if (Debug) args += " --remote-debugging-port=9223";
         opt.AdditionalBrowserArguments = args;
         env = await CoreWebView2Environment.CreateAsync(null, DataDir, opt);
+        Log.Write("WebView2 环境已创建 " + env.BrowserVersionString);
 
         msg = new MsgWindow();
         msg.OnMouse = OnMouse;
@@ -326,7 +339,8 @@ class WallpaperHost
     async Task SyncCore()
     {
         DesktopLayer l = DesktopLayer.Find();
-        if (l == null) return;
+        if (l == null) { Log.Write("找不到桌面图标层，稍后再试"); ScheduleSync(); return; }
+        if (layer == null || l.Host != layer.Host) Log.Write("桌面层：" + (l.Raised ? "新结构（Progman 内）" : "旧结构（WorkerW）") + " progman=" + l.Progman + " defview=" + l.DefView + " workerw=" + l.WorkerW);
         bool relayer = layer == null || l.Host != layer.Host || l.DefView != layer.DefView || l.WorkerW != layer.WorkerW;
         layer = l;
 
@@ -372,7 +386,7 @@ class WallpaperHost
     public void OnPageReady(WallpaperWindow w)
     {
         if (PageReady != null) PageReady(w);
-        if (!readyFired) { readyFired = true; if (Ready != null) Ready(); }
+        UpdateRunning();
     }
 
     /// <summary>每秒一次：桌面层还在不在、有没有全屏程序挡着</summary>
@@ -410,8 +424,18 @@ class WallpaperHost
             if (!hidden) w.CoveredSince = DateTime.MaxValue;
             else if (w.CoveredSince == DateTime.MaxValue) w.CoveredSince = now;
             bool longHidden = hidden && (now - w.CoveredSince).TotalSeconds >= 20;
-            w.SetRunning(!locked && !sleeping && !full && !longHidden);
+            string why = locked ? "锁屏" : sleeping ? "睡眠" : full ? "全屏程序" : longHidden ? "被窗口挡住" : "正常";
+            w.SetRunning(why == "正常", why);
         }
+        TryFireReady();
+    }
+
+    /// <summary>安装程序等的「装好了」：网页载入完成并且真的显示在桌面上，才算</summary>
+    void TryFireReady()
+    {
+        if (readyFired) return;
+        foreach (WallpaperWindow w in windows)
+            if (w.Showing) { readyFired = true; Log.Write("报纸已显示在桌面上"); if (Ready != null) Ready(); return; }
     }
 
     /// <summary>当前可见、没最小化、没被系统藏起来的普通窗口的位置</summary>

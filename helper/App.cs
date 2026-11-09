@@ -226,7 +226,7 @@ static partial class Opener
     static async void StartHost()
     {
         if (hostStarted) return;
-        if (RuntimeVersion() == null) { AskInstallWebView2(); return; }
+        if (RuntimeVersion() == null) { Log.Write("没有 WebView2"); AskInstallWebView2(); return; }
         hostStarted = true;
         host = new WallpaperHost();
         host.WebRoot = WebRoot;
@@ -249,6 +249,7 @@ static partial class Opener
             try { await host.Start(); }
             catch (Exception ex) { err = ex; }
             if (err == null) return;
+            Log.Write("启动壁纸失败（第 " + (attempt + 1) + " 次）：" + err);
             // 旧版刚退出时 WebView2 的后台进程可能还没走完：等一下再试
             host.Stop();
             if (attempt >= 3)
@@ -309,7 +310,8 @@ static partial class Opener
     {
         // 壁纸程序不给用户弹技术错误框：界面线程上的意外异常一律吞掉（各处已尽量自己处理）
         Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-        Application.ThreadException += delegate { };
+        Log.Path = Path.Combine(InstallDir, "log.txt");
+        Application.ThreadException += delegate (object s, ThreadExceptionEventArgs e) { Log.Write("意外错误：" + e.Exception); };
         SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 
         // 旧版本留下的启动项：换成新名字

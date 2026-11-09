@@ -161,3 +161,27 @@ class DesktopLayer
         catch { return false; }
     }
 }
+
+/// <summary>诊断日志：%LOCALAPPDATA%\AI-news-cover\log.txt，只记启动步骤和出错，超过 256KB 从头写。出问题时让用户把它发过来。</summary>
+static class Log
+{
+    public static string Path;
+    static readonly object gate = new object();
+
+    public static void Write(string s)
+    {
+        if (Path == null) return;
+        try
+        {
+            lock (gate)
+            {
+                System.IO.FileInfo f = new System.IO.FileInfo(Path);
+                bool reset = f.Exists && f.Length > 256 * 1024;
+                string line = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "  " + s + Environment.NewLine;
+                if (reset) System.IO.File.WriteAllText(Path, line, Encoding.UTF8);
+                else System.IO.File.AppendAllText(Path, line, Encoding.UTF8);
+            }
+        }
+        catch { }
+    }
+}
