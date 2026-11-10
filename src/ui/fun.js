@@ -66,21 +66,17 @@ export function initFun(full, glance) {
     const away = Date.now() - seen.at;
     const lines = [];
     const fl = featured.state.data ? featured.state.data.list.filter((it) => it.publishedAt > seen.at) : [];
-    if (fl.length) {
-      const top = fl.slice().sort((a, b) => (b.score || 0) - (a.score || 0) || b.publishedAt - a.publishedAt)[0];
-      lines.push(top.title);
-    }
-    const d = daily.state.data;
+    // 离开期间分数最高的两条精选；只有一条时，热点榜首换了就补上
+    fl.slice().sort((a, b) => (b.score || 0) - (a.score || 0) || b.publishedAt - a.publishedAt).slice(0, 2).forEach((it) => lines.push(it.title));
     const hd = hot.state.data;
-    if (d && seen.daily && d.date !== seen.daily) lines.push('今日 AI news 已备好~');
-    else if (hd && hd.items[0] && seen.hotTop && hd.items[0].id !== seen.hotTop) lines.push('热点榜首换成了「' + hd.items[0].title + '」');
+    if (lines.length < 2 && hd && hd.items[0] && seen.hotTop && hd.items[0].id !== seen.hotTop) lines.push('热点榜首换成了「' + hd.items[0].title + '」');
     if (!lines.length) return null;
     const n = Math.max(1, Math.round(away / HOUR));
     const hrSeen = new Date(seen.at).getHours();
     const hrNow = getNow().getHours();
     const slept = away >= 4 * HOUR && (hrSeen >= 21 || hrSeen < 4) && hrNow >= 4 && hrNow < 13;
     const span = n >= 48 ? Math.round(n / 24) + ' 天' : n + ' 个小时';
-    return { head: (slept ? '你睡着的 ' : '你离开的 ') + span + '里——', lines: lines.slice(0, 2), tail: slept ? '早安。' : '欢迎回来。' };
+    return { head: (slept ? '你睡着的 ' : '你离开的 ') + span + '里——', lines: lines.slice(0, 2), tail: slept ? '早安' : '欢迎回来' };
   }
 
   /** 等三路数据都在开机 / 唤醒之后刷新过一次（最多等 15 秒），再判断要不要放留言条。 */
@@ -240,8 +236,8 @@ export function initFun(full, glance) {
       note() {
         if (host().noteShown) return host().hideNote();
         const list = featured.state.data ? featured.state.data.list : [];
-        const top = list[0];
-        host().showNote({ head: '你睡着的 9 个小时里——', lines: [top ? top.title : 'OpenAI 发了 GPT-6 Cyber', '今日 AI news 已备好~'], tail: '早安。' });
+        const lines = list.slice(0, 2).map((it) => it.title);
+        host().showNote({ head: '你睡着的 9 个小时里——', lines: lines.length ? lines : ['OpenAI 发了 GPT-6 Cyber', 'Google 发布 Omni 1.2 Flash'], tail: '早安' });
       },
       night() {
         if (host().nightOn) host().setNight(false);

@@ -246,8 +246,10 @@ nc-daily { transition: filter 1.5s var(--ease); }
     radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.7), rgba(0, 0, 0, 0) 60%);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 95% 97%, 90% 100%, 85% 97%, 80% 100%, 75% 97%, 70% 100%, 65% 97%, 60% 100%, 55% 97%, 50% 100%, 45% 97%, 40% 100%, 35% 97%, 30% 100%, 25% 97%, 20% 100%, 15% 97%, 10% 100%, 5% 97%, 0% 100%);
 }
-.gn-head { font-size: 21px; line-height: 1.35; letter-spacing: -0.01em; white-space: nowrap; }
-.gn-lines { font-size: 19px; line-height: 1.5; margin-top: 4px; }
+.gn-head { font-size: 19px; line-height: 1.35; letter-spacing: -0.03em; white-space: nowrap; }
+.gn-lines { font-size: 17px; line-height: 1.38; margin-top: 2px; }
+.gn-item { padding-left: 0.7em; text-indent: -0.7em; }
+.gn-item + .gn-item { margin-top: 5px; }
 .gn-tail { font-size: 22px; text-align: right; margin-top: 2px; color: #c8501c; }
 .gn-tape { position: absolute; left: 108px; top: -11px; width: 76px; height: 22px; z-index: 7; background: rgba(200, 80, 28, 0.2); background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 2px, rgba(0, 0, 0, 0) 2px 5px); transform: rotate(1deg); }
 @keyframes gnSway { 0%, 100% { transform: rotate(calc(var(--r) - 0.9deg)); } 35% { transform: rotate(calc(var(--r) + 0.5deg)); } 70% { transform: rotate(calc(var(--r) + 1.1deg)); } }

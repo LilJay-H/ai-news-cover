@@ -505,8 +505,8 @@ class NcFull extends HTMLElement {
         h('div', { class: 'note-paper' },
           h('i', { class: 'note-line', 'aria-hidden': 'true' }),
           h('i', { class: 'note-shade', 'aria-hidden': 'true' }),
-          h('div', { class: 'n-head' }, note.head),
-          h('div', { class: 'n-lines' }, ...note.lines.map((l) => h('div', { class: 'clamp2' }, '· ' + l))),
+          h('div', { class: 'n-head' }, note.head.replace(/——$/, ''), /——$/.test(note.head) ? h('span', { class: 'n-dash' }, '——') : ''),
+          h('div', { class: 'n-lines' }, ...note.lines.map((l) => h('div', { class: 'clamp2 n-item' }, '· ' + l))),
           h('div', { class: 'n-tail' }, note.tail)),
         h('i', { class: 'tape l', 'aria-hidden': 'true' }),
         h('i', { class: 'tape r', 'aria-hidden': 'true' }))

@@ -32,7 +32,7 @@ export function createGlanceFun() {
           'div',
           { class: 'gn-sway' },
           h('div', { class: 'gn-lift', 'aria-hidden': 'true' }),
-          h('div', { class: 'gn-paper' }, h('div', { class: 'gn-head' }, note.head), h('div', { class: 'gn-lines' }, ...note.lines.map((l) => h('div', { class: 'clamp2' }, '· ' + l))), h('div', { class: 'gn-tail' }, note.tail))
+          h('div', { class: 'gn-paper' }, h('div', { class: 'gn-head' }, note.head.replace(/——$/, ''), /——$/.test(note.head) ? h('span', { class: 'n-dash' }, '——') : ''), h('div', { class: 'gn-lines' }, ...note.lines.map((l) => h('div', { class: 'clamp2 gn-item' }, '· ' + l))), h('div', { class: 'gn-tail' }, note.tail))
         ),
         h('i', { class: 'gn-tape', 'aria-hidden': 'true' })
       );
