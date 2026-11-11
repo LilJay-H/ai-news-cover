@@ -43,6 +43,7 @@ a { color: var(--link); }
 }
 .serif { font-family: var(--font-serif); }
 .fr { font-family: var(--font-fr); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1; }
+.clamp1 { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .clamp3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 
