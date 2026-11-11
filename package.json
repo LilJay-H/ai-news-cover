@@ -7,7 +7,7 @@
     "build": "node build/build.mjs",
     "dev": "node build/build.mjs --watch",
     "pack": "node build/build.mjs && python build/pack.py",
-    "release": "node build/build.mjs && python build/pack.py && node build/build-helper.mjs",
+    "release": "node build/build.mjs && python build/pack.py && node build/build-helper.mjs && node build/make-update.mjs",
     "helper": "node build/build-helper.mjs"
   },
   "devDependencies": {

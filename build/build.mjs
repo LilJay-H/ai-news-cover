@@ -89,7 +89,11 @@ function copyStatic(out, kind) {
   // 无跳转特化：所有跳转入口（查看全部、阅读原文、日报跳转、右下角胶囊、行尾箭头）从一开始就不显示
   if (kind === 'workshop') html = html.replace('</head>', '<style>.more,.g-link,.p-link,.ff-more,.fk-more,.fd-more,#aihot-link,.sim-a{display:none!important}</style></head>');
   writeFileSync(join(out, 'index.html'), html);
-  if (kind === 'lively') cpSync(join(root, 'host-files', 'lively'), out, { recursive: true });
+  if (kind === 'lively') {
+    cpSync(join(root, 'host-files', 'lively'), out, { recursive: true });
+    // 网页版本号（UTC 年月日时分秒）：桌面程序靠它判断远程更新包是不是更新（helper/Update.cs）
+    writeFileSync(join(out, 'build.txt'), BUILD + '\n');
+  }
   if (kind === 'we') {
     cpSync(join(root, 'host-files', 'we', 'project.json'), join(out, 'project.json'));
     cpSync(join(root, 'assets', 'store', 'we_preview.jpg'), join(out, 'preview.jpg'));
@@ -145,6 +149,7 @@ function checkWorkshop(out) {
   console.log('创意工坊包扫描通过');
 }
 
+const BUILD = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
 checkLinks();
 const targets = watch ? [['lively', false]] : [['lively', false], ['we', false], ['workshop', false, 47821, true], ['web', true], ['mac', false, 47822]];
 for (const [kind, web, port] of targets) {

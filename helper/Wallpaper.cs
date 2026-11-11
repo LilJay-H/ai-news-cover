@@ -156,6 +156,25 @@ class WallpaperWindow : NativeWindow
         try { await Ctl.CoreWebView2.TrySuspendAsync(); } catch { }
     }
 
+    /// <summary>网页更新：换到新的网页目录并重新载入（只在暂停时调用；清掉磁盘缓存，免得读到旧的 app.js；本地存储不动）</summary>
+    public async Task SwitchRoot(string root)
+    {
+        if (!Alive) return;
+        CoreWebView2 wv = Ctl.CoreWebView2;
+        try { wv.ClearVirtualHostNameToFolderMapping(WallpaperHost.HostName); } catch { }
+        wv.SetVirtualHostNameToFolderMapping(WallpaperHost.HostName, root, CoreWebView2HostResourceAccessKind.Allow);
+        try { await wv.Profile.ClearBrowsingDataAsync(CoreWebView2BrowsingDataKinds.DiskCache); } catch { }
+        try { if (wv.IsSuspended) wv.Resume(); } catch { }
+        Ready = false;
+        wv.Navigate(WallpaperHost.PageOrigin + "/index.html");
+    }
+
+    /// <summary>暂停期间重新载入过网页：载完再让它睡下</summary>
+    public void Resuspend()
+    {
+        if (Alive && !Ctl.IsVisible && suspended) TrySuspend();
+    }
+
     public void Close()
     {
         try { if (Ctl != null) Ctl.Close(); } catch { }
@@ -226,6 +245,7 @@ class WallpaperHost
     public Action<string> OpenExternalHandler;
     public Action<WallpaperWindow> PageReady;
     public Action Ready; // 第一块屏幕的网页载入完成
+    public Action Paused; // 每秒检查时，所有屏都处在暂停状态（网页更新趁这时换）
 
     bool locked, sleeping;
     CoreWebView2Environment env;
@@ -387,6 +407,17 @@ class WallpaperHost
     {
         if (PageReady != null) PageReady(w);
         UpdateRunning();
+        w.Resuspend();
+    }
+
+    /// <summary>网页更新：所有屏换到新目录</summary>
+    public async Task SwitchRoot(string root)
+    {
+        WebRoot = root;
+        foreach (WallpaperWindow w in windows.ToArray())
+        {
+            try { await w.SwitchRoot(root); } catch (Exception ex) { Log.Write("换网页出错：" + ex.Message); }
+        }
     }
 
     /// <summary>每秒一次：桌面层还在不在、有没有全屏程序挡着</summary>
@@ -412,6 +443,7 @@ class WallpaperHost
         if (fg != IntPtr.Zero && !IsShell(fg) && Native.GetWindowRect(fg, out fr)) fgFull = true;
         List<Native.RECT> big = (windows.Count > 0) ? CoveringWindows() : null;
         DateTime now = DateTime.UtcNow;
+        bool anyRunning = false;
         foreach (WallpaperWindow w in windows)
         {
             // 全屏程序：立刻暂停
@@ -426,8 +458,10 @@ class WallpaperHost
             bool longHidden = hidden && (now - w.CoveredSince).TotalSeconds >= 20;
             string why = locked ? "锁屏" : sleeping ? "睡眠" : full ? "全屏程序" : longHidden ? "被窗口挡住" : "正常";
             w.SetRunning(why == "正常", why);
+            if (why == "正常") anyRunning = true;
         }
         TryFireReady();
+        if (!anyRunning && windows.Count > 0 && Paused != null) Paused();
     }
 
     /// <summary>安装程序等的「装好了」：网页载入完成并且真的显示在桌面上，才算</summary>

@@ -229,7 +229,10 @@ static partial class Opener
         if (RuntimeVersion() == null) { Log.Write("没有 WebView2"); AskInstallWebView2(); return; }
         hostStarted = true;
         host = new WallpaperHost();
-        host.WebRoot = WebRoot;
+        WebUpdate.InstallDir = InstallDir;
+        host.WebRoot = WebUpdate.ActiveRoot();
+        if (host.WebRoot != WebRoot) Log.Write("网页：用更新过的 " + Path.GetFileName(host.WebRoot));
+        host.Paused = OnPaused;
         host.DataDir = DataDir;
         host.LoaderDir = Path.Combine(InstallDir, "runtimes", Arch());
         host.OpenExternalHandler = delegate (string u) { if (Allowed(u)) OpenInBrowser(u); };
@@ -260,6 +263,41 @@ static partial class Opener
             }
             await Task.Delay(2000);
         }
+    }
+
+    // ---------------- 网页远程更新（Update.cs） ----------------
+    static bool switching;
+
+    /// <summary>报纸暂停着（每秒一次）：有下好的新网页就趁这时换上，用户看不到刷新</summary>
+    static async void OnPaused()
+    {
+        if (switching || !WebUpdate.HasPending) return;
+        string dir = WebUpdate.TakePending();
+        if (dir == null) return;
+        switching = true;
+        try
+        {
+            Log.Write("网页更新：报纸暂停中，换到 " + Path.GetFileName(dir));
+            await host.SwitchRoot(dir);
+        }
+        catch (Exception ex) { Log.Write("网页更新：换的时候出错（" + ex.Message + "）"); }
+        finally { WebUpdate.Applied(); switching = false; }
+    }
+
+    static void StartUpdateChecks()
+    {
+        int first = 60;
+        int.TryParse(Environment.GetEnvironmentVariable("AINC_UPDATE_FIRST") ?? "", out first);
+        if (first <= 0) first = 60;
+        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+        t.Interval = first * 1000;
+        t.Tick += delegate
+        {
+            t.Interval = 6 * 3600 * 1000;
+            if (host == null) return;
+            WebUpdate.Check(WebUpdate.BuildOf(host.WebRoot));
+        };
+        t.Start();
     }
 
     static void Exit()
@@ -407,6 +445,7 @@ static partial class Opener
         ThreadPool.RegisterWaitForSingleObject(quitEv, delegate { try { invoker.BeginInvoke((Action)Exit); } catch { } }, null, -1, true);
 
         StartHost();
+        StartUpdateChecks();
         Application.Run();
         GC.KeepAlive(quitEv);
         GC.KeepAlive(invoker);

@@ -40,7 +40,7 @@ if (!existsSync(coreDll)) {
 
 mkdirSync(outDir, { recursive: true });
 const exe = join(outDir, 'AI-news-cover-Setup.exe');
-const src = ['AI-news-cover.cs', 'App.cs', 'Desktop.cs', 'Wallpaper.cs'].map((f) => join(root, 'helper', f));
+const src = ['AI-news-cover.cs', 'App.cs', 'Desktop.cs', 'Wallpaper.cs', 'Update.cs'].map((f) => join(root, 'helper', f));
 const args = [
   '/nologo', '/optimize+', '/target:winexe', '/platform:anycpu', '/out:' + exe,
   '/win32icon:' + join(root, 'assets', 'icons', 'app.ico'),
